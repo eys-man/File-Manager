@@ -1,6 +1,6 @@
-export async function cd(path) {
+export async function cd(newPath) {
     try {
-        process.chdir(path);
+        process.chdir(newPath);
     } catch {
         process.stdout.write(`Operation failed`);
     }

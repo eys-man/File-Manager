@@ -12,9 +12,20 @@ export default async function parseCommand(str, stream) {
           await cd('..');
           break;
       case 'cd':
-          // TODO: провести разбор аргументов на строку с пробелами
-          console.log(args[0]);
-          await cd(args[0]);
+          let realPath = ''; // будет передаваться в chdir
+          let pathWithSpaces = [];
+          if (args[0].startsWith('"') ) { // если путь в двойных кавычках
+              for(let i = 0; i < args.length; i++) {
+                  pathWithSpaces.push(args[i]);
+                  if (args[i].endsWith('"') ) {
+                      realPath = pathWithSpaces.join(' ').slice(1, -1);
+                      break;
+                  }
+              }
+          }
+          else realPath = args[0]; // если путь не в двойных кавычках
+
+          await cd(realPath);
           break;
       default:
           process.stdout.write(`Invalid input`);

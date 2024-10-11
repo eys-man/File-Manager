@@ -8,6 +8,7 @@ const userName = process.env.npm_config_username ?
     process.env.npm_config_username :
     'Guest';
 
+// console.log(`Welcome to the File Manager, ${userName}!`);
 process.stdout.write(`Welcome to the File Manager, ${userName}!`);
 process.chdir(os.homedir()); // перейти в папку пользователя
 showCurrentDirectory();
@@ -18,6 +19,8 @@ userInterface
     .on('line', async (userInput) =>
     {
         // TODO: здесь будет разбор команд
+        // parseCommand(userInput, userInterface)
+        //     .then(() => showCurrentDirectory());
         await parseCommand(userInput, userInterface);
         // после каждой операции - удачной или нет - вывод рабочего каталога
         showCurrentDirectory();
@@ -27,6 +30,7 @@ userInterface
         userInterface.close();
     })
     .on('close', () => {
+        // console.log(`Thank you for using File Manager, ${userName}, goodbye!\n`);
         process.stdout.write(`Thank you for using File Manager, ${userName}, goodbye!\n`);
         process.exit();
     });

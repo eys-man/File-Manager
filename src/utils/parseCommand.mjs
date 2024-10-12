@@ -12,6 +12,7 @@ import { parseRealPath } from './parseRealPath.mjs'
 export default async function parseCommand(str, stream) {
     // команды и параметры должны быть разделены пробелами
     const [command, ...args] = str.split(' ');
+    let secondArgumentIndex = parseRealPath(args, 0).start;
 
     // разобрать команды
     switch (command.toLowerCase()) {
@@ -33,11 +34,7 @@ export default async function parseCommand(str, stream) {
             await addFile( parseRealPath(args, 0).realPath );
             break;
         case 'rn':
-            // const firstArgumentIndex = 0;
-            const secondArgumentIndex = parseRealPath(args, 0).start;
-            // console.log(`firstArgumentIndex=${firstArgumentIndex}, secondArgumentIndex=${secondArgumentIndex}`);
             await renameFile(
-                // parseRealPath(args, firstArgumentIndex).realPath,
                 parseRealPath(args, 0).realPath,
                 parseRealPath(args, secondArgumentIndex).realPath);
             break;

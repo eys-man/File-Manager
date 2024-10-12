@@ -46,24 +46,41 @@ export async function renameFile(filePath, newFilePath) {
     }
 }
 
-export async function copyFile(sourcePath, destinationPath) {
+export async function copyFile(sourcePath, destinationFolder) {
     const absSourcePath = path.resolve(sourcePath);
-    const absDestinationPath = path.resolve(destinationPath);
+    const absDestinationFolder = path.resolve(destinationFolder);
+
+    // извлечь имя файла из первого параметра пути
+    const fileName = path.basename(absSourcePath);
+    // console.log(`копируемый файл fileName = ${fileName}`);
+
+    // добавить имя файла к пути назначения
+    const finalDestinationPath = path.join(absDestinationFolder, fileName);
+    // console.log(`путь назначения finalDestinationPath = ${finalDestinationPath}`);
 
     try {
-        await pipeline(fs.createReadStream(absSourcePath), fs.createWriteStream(absDestinationPath));
+        await pipeline(fs.createReadStream(absSourcePath), fs.createWriteStream(finalDestinationPath));
     } catch {
         console.log(`Operation failed`);
     }
 };
 
-export async function moveFile(sourcePath, destinationPath) {
+export async function moveFile(sourcePath, destinationFolder) {
     const absSourcePath = path.resolve(sourcePath);
-    const absDestinationPath = path.resolve(destinationPath);
+    const absDestinationFolder = path.resolve(destinationFolder); // это должен быть путь к папке
+
+    // извлечь имя файла из первого параметра пути
+    const fileName = path.basename(absSourcePath);
+    // console.log(`перемещаемый файл fileName = ${fileName}`);
+    // console.log(`его путь absSourcePath = ${absSourcePath}`);
+
+    // добавить имя файла к пути назначения
+    const finalDestinationPath = path.join(absDestinationFolder, fileName);
+    // console.log(`путь назначения finalDestinationPath = ${finalDestinationPath}`);
 
     try {
         // скопировать
-        await pipeline(fs.createReadStream(absSourcePath), fs.createWriteStream(absDestinationPath));
+        await pipeline(fs.createReadStream(absSourcePath), fs.createWriteStream(finalDestinationPath));
         // удалить
         await unlink(absSourcePath);
     } catch {

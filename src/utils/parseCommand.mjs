@@ -10,6 +10,7 @@ import { cd, ls } from './navigation.mjs';
 import { parseRealPath } from './parseRealPath.mjs'
 import { hashFile } from './hashFile.mjs';
 import { brotli } from './zip.mjs';
+import { getOsInfo } from './os.mjs';
 
 export default async function parseCommand(str, stream) {
     // команды и параметры должны быть разделены пробелами
@@ -69,6 +70,9 @@ export default async function parseCommand(str, stream) {
                 parseRealPath(args, secondArgumentIndex).realPath,
                 'decompress'
             );
+            break;
+        case 'os':
+            await getOsInfo(args[0]);
             break;
         default:
             console.log(`Invalid input`);

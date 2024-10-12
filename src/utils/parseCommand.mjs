@@ -1,3 +1,4 @@
+import { readFile } from './fileOperations.mjs';
 import { cd, ls } from './navigation.mjs';
 import { parseRealPath } from './parseRealPath.mjs'
 
@@ -18,7 +19,10 @@ export default async function parseCommand(str, stream) {
         case 'ls':
             await ls();
             break;
+        case 'cat':
+            await readFile( parseRealPath(args) );
+            break;
         default:
-            process.stdout.write(`Invalid input`);
+            console.log(`Invalid input`);
     }
 }

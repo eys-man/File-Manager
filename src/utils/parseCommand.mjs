@@ -9,6 +9,7 @@ import {
 import { cd, ls } from './navigation.mjs';
 import { parseRealPath } from './parseRealPath.mjs'
 import { hashFile } from './hashFile.mjs';
+import { brotli } from './zip.mjs';
 
 export default async function parseCommand(str, stream) {
     // команды и параметры должны быть разделены пробелами
@@ -54,6 +55,20 @@ export default async function parseCommand(str, stream) {
             break;
         case 'hash':
             await hashFile( parseRealPath(args, 0).realPath );
+            break;
+        case 'compress':
+            await brotli(
+                parseRealPath(args, 0).realPath,
+                parseRealPath(args, secondArgumentIndex).realPath,
+                'compress'
+            );
+            break;
+        case 'decompress':
+            await brotli(
+                parseRealPath(args, 0).realPath,
+                parseRealPath(args, secondArgumentIndex).realPath,
+                'decompress'
+            );
             break;
         default:
             console.log(`Invalid input`);

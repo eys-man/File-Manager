@@ -17,7 +17,6 @@ const userInterface = readline.createInterface(process.stdin, process.stdout);
 userInterface
     .on('line', async (userInput) =>
     {
-        // TODO: здесь будет разбор команд
         await parseCommand(userInput, userInterface);
         // после каждой операции - удачной или нет - вывод рабочего каталога
         showCurrentDirectory();

@@ -34,11 +34,14 @@ export async function addFile(filePath) {
     }
 }
 
-export async function renameFile(filePath, newFilePath) {
-    // console.log(`filePath=${filePath} -> newFilePath=${newFilePath}`);
+export async function renameFile(filePath, newFileName) {
     const absolutePath = path.resolve(filePath);
-    const newAbsolutePath = path.resolve(newFilePath);
-    // console.log(`filePath=${absolutePath} -> newFilePath=${newAbsolutePath}`);
+
+    // узнать имя папки, содержащей этот файл
+    const parentPath = path.dirname(filePath);
+
+    const newAbsolutePath = path.join(parentPath, newFileName);
+
     try {
         await rename(absolutePath, newAbsolutePath);
     } catch {
@@ -52,11 +55,9 @@ export async function copyFile(sourcePath, destinationFolder) {
 
     // извлечь имя файла из первого параметра пути
     const fileName = path.basename(absSourcePath);
-    // console.log(`копируемый файл fileName = ${fileName}`);
 
     // добавить имя файла к пути назначения
     const finalDestinationPath = path.join(absDestinationFolder, fileName);
-    // console.log(`путь назначения finalDestinationPath = ${finalDestinationPath}`);
 
     try {
         await pipeline(fs.createReadStream(absSourcePath), fs.createWriteStream(finalDestinationPath));
@@ -71,12 +72,9 @@ export async function moveFile(sourcePath, destinationFolder) {
 
     // извлечь имя файла из первого параметра пути
     const fileName = path.basename(absSourcePath);
-    // console.log(`перемещаемый файл fileName = ${fileName}`);
-    // console.log(`его путь absSourcePath = ${absSourcePath}`);
 
     // добавить имя файла к пути назначения
     const finalDestinationPath = path.join(absDestinationFolder, fileName);
-    // console.log(`путь назначения finalDestinationPath = ${finalDestinationPath}`);
 
     try {
         // скопировать
